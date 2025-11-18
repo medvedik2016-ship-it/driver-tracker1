@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Зона погрузки - Учёт водителей</title>
+  <style>
+    :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* RGB versions for opacity control */
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  /* Background color tokens (Light Mode) */
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+  --color-bg-5: rgba(147, 51, 234, 0.08);
+  --color-bg-6: rgba(249, 115, 22, 0.08);
+  --color-bg-7: rgba(236, 72, 153, 0.08);
+  --color-bg-8: rgba(6, 182, 212, 0.08);
+
+  /* Semantic Color Tokens (Light Mode) */
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  /* Common style patterns */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+
+  /* RGB versions for opacity control */
+  --color-success-rgb: 33, 128, 141;
+  --color-error-rgb: 192, 21, 47;
+  --color-warning-rgb: 168, 75, 47;
+  --color-info-rgb: 98, 108, 113;
+
+  /* Typography */
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
+    0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+  /* Animation */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+}
+
+/* Dark mode colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+
+    --color-bg-1: rgba(29, 78, 216, 0.15);
+    --color-bg-2: rgba(180, 83, 9, 0.15);
+    --color-bg-3: rgba(21, 128, 61, 0.15);
+    --color-bg-4: rgba(185, 28, 28, 0.15);
+    --color-bg-5: rgba(107, 33, 168, 0.15);
+    --color-bg-6: rgba(194, 65, 12, 0.15);
+    --color-bg-7: rgba(190, 24, 93, 0.15);
+    --color-bg-8: rgba(8, 145, 178, 0.15);
+
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+
+    --color-success-rgb: var(--color-teal-300-rgb);
+    --color-error-rgb: var(--color-red-400-rgb);
+    --color-warning-rgb: var(--color-orange-400-rgb);
+    --color-info-rgb: var(--color-gray-300-rgb);
+  }
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
+    format('woff2');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Custom styles for the app */
+.app-header {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  padding: var(--space-16) var(--space-16);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+}
+
+.app-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+}
+
+.app-header .current-time {
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+  margin-top: var(--space-4);
+}
+
+.container {
+  max-width: 100%;
+  padding: 0 var(--space-16) var(--space-24) var(--space-16);
+}
+
+/* Registration Form */
+.registration-section {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  margin: var(--space-16) 0;
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.registration-section h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-16);
+  color: var(--color-text);
+}
+
+.form-group {
+  margin-bottom: var(--space-16);
+}
+
+.form-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-8);
+  color: var(--color-text);
+}
+
+.form-control {
+  width: 100%;
+  padding: var(--space-12) var(--space-16);
+  font-size: var(--font-size-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  background: var(--color-background);
+  color: var(--color-text);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+  min-height: 48px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-16) var(--space-24);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  min-height: 52px;
+  width: 100%;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn-primary:active {
+  background: var(--color-primary-active);
+}
+
+.btn-secondary {
+  background: var(--color-secondary);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  padding: var(--space-10) var(--space-16);
+  min-height: 44px;
+}
+
+.btn-secondary:hover {
+  background: var(--color-secondary-hover);
+}
+
+.btn-secondary:active {
+  background: var(--color-secondary-active);
+}
+
+/* Statistics */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-12);
+  margin: var(--space-16) 0;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  padding: var(--space-16);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-card-border);
+  text-align: center;
+}
+
+.stat-value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  display: block;
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-4);
+  display: block;
+}
+
+/* Section Headers */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--space-24) 0 var(--space-16) 0;
+}
+
+.section-header h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.section-header .badge {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Driver Cards */
+.driver-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.driver-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-16);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.driver-card.warning {
+  border-color: var(--color-warning);
+  background: rgba(var(--color-warning-rgb), 0.05);
+}
+
+.driver-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-12);
+}
+
+.driver-info h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+
+.vehicle-number {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-mono);
+}
+
+.driver-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-12);
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta-label {
+  font-weight: var(--font-weight-medium);
+}
+
+.meta-value {
+  font-family: var(--font-family-mono);
+}
+
+.duration-badge {
+  background: var(--color-bg-1);
+  color: var(--color-primary);
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-mono);
+}
+
+.duration-badge.warning {
+  background: rgba(var(--color-warning-rgb), 0.15);
+  color: var(--color-warning);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-32) var(--space-16);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.empty-state-icon {
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--space-16);
+  opacity: 0.5;
+}
+
+/* Phone number display */
+.phone-number {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-4);
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-card-border);
+  position: sticky;
+  top: 80px;
+  z-index: 90;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: var(--space-16);
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab-btn:hover {
+  color: var(--color-text);
+  background: var(--color-secondary);
+}
+
+.tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.tab-content {
+  display: none;
+  padding-top: var(--space-16);
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Mode Toggle */
+.mode-toggle {
+  display: flex;
+  gap: var(--space-8);
+  margin-bottom: var(--space-20);
+  background: var(--color-background);
+  padding: var(--space-4);
+  border-radius: var(--radius-base);
+}
+
+.mode-btn {
+  flex: 1;
+  padding: var(--space-12) var(--space-16);
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.mode-btn:hover {
+  background: var(--color-secondary);
+}
+
+.mode-btn.active {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.driver-form {
+  display: none;
+}
+
+.driver-form.active {
+  display: block;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  margin-top: var(--space-12);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+/* Permanent Driver Badge */
+.permanent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: rgba(var(--color-warning-rgb), 0.15);
+  color: var(--color-warning);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.visit-count {
+  background: var(--color-bg-1);
+  color: var(--color-primary);
+  padding: var(--space-4) var(--space-10);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  margin-left: var(--space-8);
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: var(--space-8);
+  margin-top: var(--space-12);
+}
+
+.btn-small {
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-sm);
+  min-height: 36px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-outline:hover {
+  background: var(--color-secondary);
+}
+
+.btn-danger {
+  background: rgba(var(--color-error-rgb), 0.1);
+  color: var(--color-error);
+  border: 1px solid rgba(var(--color-error-rgb), 0.3);
+}
+
+.btn-danger:hover {
+  background: rgba(var(--color-error-rgb), 0.2);
+}
+
+/* Success Message */
+.success-message {
+  background: rgba(var(--color-success-rgb), 0.15);
+  color: var(--color-success);
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-base);
+  margin-bottom: var(--space-16);
+  border: 1px solid rgba(var(--color-success-rgb), 0.3);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  display: none;
+}
+
+.success-message.show {
+  display: block;
+  animation: slideIn var(--duration-normal) var(--ease-standard);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (min-width: 640px) {
+  .container {
+    max-width: var(--container-sm);
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .driver-meta {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .meta-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <h1>🚛 Зона погрузки</h1>
+    <div class="current-time" id="currentTime"></div>
+  </header>
+
+  <!-- Tab Navigation -->
+  <nav class="tab-navigation">
+    <button class="tab-btn active" data-tab="registration">Регистрация</button>
+    <button class="tab-btn" data-tab="history">История</button>
+    <button class="tab-btn" data-tab="permanent">Постоянные водители</button>
+    <button class="tab-btn" data-tab="statistics">Статистика</button>
+  </nav>
+
+  <div class="container">
+    <!-- Registration Tab -->
+    <div class="tab-content active" id="registration-tab">
+    <!-- Registration Form -->
+    <section class="registration-section">
+      <h2>Регистрация приезда</h2>
+      
+      <!-- Registration Mode Toggle -->
+      <div class="mode-toggle">
+        <button type="button" class="mode-btn active" data-mode="new">Новый водитель</button>
+        <button type="button" class="mode-btn" data-mode="permanent">Постоянный водитель</button>
+      </div>
+
+      <!-- New Driver Form -->
+      <form id="registrationForm" class="driver-form active">
+        <div class="form-group">
+          <label class="form-label" for="driverName">Имя водителя</label>
+          <input type="text" id="driverName" class="form-control" placeholder="Введите имя" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="vehicleNumber">Номер машины</label>
+          <input type="text" id="vehicleNumber" class="form-control" placeholder="А123БВ77" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phoneNumber">Телефон (необязательно)</label>
+          <input type="tel" id="phoneNumber" class="form-control" placeholder="+7 916 123-45-67">
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="saveAsPermanent">
+            <span>Сохранить как постоянного</span>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Зарегистрировать приезд</button>
+      </form>
+
+      <!-- Permanent Driver Selection -->
+      <form id="permanentDriverForm" class="driver-form">
+        <div class="form-group">
+          <label class="form-label" for="permanentDriverSelect">Выберите водителя</label>
+          <select id="permanentDriverSelect" class="form-control" required>
+            <option value="">-- Выберите постоянного водителя --</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Зарегистрировать приезд</button>
+      </form>
+    </section>
+
+    <!-- Active Drivers -->
+    <div class="section-header">
+      <h2>Водители на зоне</h2>
+      <span class="badge" id="activeBadge">0</span>
+    </div>
+    <div class="driver-list" id="activeDriversList">
+      <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <p>Нет водителей на зоне</p>
+      </div>
+    </div>
+    </div>
+
+    <!-- History Tab -->
+    <div class="tab-content" id="history-tab">
+    <!-- Completed Visits -->
+    <div class="section-header">
+      <h2>История отъездов</h2>
+    </div>
+    <div class="driver-list" id="completedDriversList">
+      <div class="empty-state">
+        <div class="empty-state-icon">✓</div>
+        <p>История пуста</p>
+      </div>
+    </div>
+    </div>
+
+    <!-- Permanent Drivers Tab -->
+    <div class="tab-content" id="permanent-tab">
+    <section class="registration-section">
+      <h2>Добавить постоянного водителя</h2>
+      <form id="addPermanentDriverForm">
+        <div class="form-group">
+          <label class="form-label" for="permDriverName">Имя водителя</label>
+          <input type="text" id="permDriverName" class="form-control" placeholder="Введите имя" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="permVehicleNumber">Номер машины</label>
+          <input type="text" id="permVehicleNumber" class="form-control" placeholder="А123БВ77" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="permPhoneNumber">Телефон (необязательно)</label>
+          <input type="tel" id="permPhoneNumber" class="form-control" placeholder="+7 916 123-45-67">
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить постоянного водителя</button>
+      </form>
+    </section>
+
+    <div class="section-header">
+      <h2>Постоянные водители</h2>
+      <span class="badge" id="permanentBadge">0</span>
+    </div>
+    <div class="driver-list" id="permanentDriversList">
+      <div class="empty-state">
+        <div class="empty-state-icon">👥</div>
+        <p>Нет постоянных водителей</p>
+      </div>
+    </div>
+    </div>
+
+    <!-- Statistics Tab -->
+    <div class="tab-content" id="statistics-tab">
+    <!-- Statistics -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="driversAtZone">0</span>
+        <span class="stat-label">Водителей на зоне</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="arrivalsToday">0</span>
+        <span class="stat-label">Приездов сегодня</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="averageTime">—</span>
+        <span class="stat-label">Среднее время</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="permanentDriversCount">0</span>
+        <span class="stat-label">Постоянных водителей</span>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2>Самые частые водители</h2>
+    </div>
+    <div class="driver-list" id="frequentDriversList">
+      <div class="empty-state">
+        <div class="empty-state-icon">⭐</div>
+        <p>Нет данных</p>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script>
+    // Data storage
+    let drivers = [];
+    let permanentDrivers = [];
+    let nextId = 1;
+    let nextPermanentId = 101;
+    let updateInterval = null;
+    let currentTab = 'registration';
+    let currentMode = 'new';
+
+    // Initialize permanent drivers with sample data
+    function initializePermanentDrivers() {
+      permanentDrivers = [
+        {
+          id: nextPermanentId++,
+          driverName: 'Иванов Петр',
+          vehicleNumber: 'А123БВ77',
+          phoneNumber: '+79161234567',
+          totalVisits: 15,
+          addedDate: '2025-10-01T09:00:00',
+          lastVisit: null
+        },
+        {
+          id: nextPermanentId++,
+          driverName: 'Сидоров Алексей',
+          vehicleNumber: 'В456ГД99',
+          phoneNumber: '+79167654321',
+          totalVisits: 23,
+          addedDate: '2025-10-05T10:30:00',
+          lastVisit: null
+        },
+        {
+          id: nextPermanentId++,
+          driverName: 'Кузнецов Владимир',
+          vehicleNumber: 'С789КЛ50',
+          phoneNumber: '+79169876543',
+          totalVisits: 8,
+          addedDate: '2025-10-15T14:20:00',
+          lastVisit: null
+        },
+        {
+          id: nextPermanentId++,
+          driverName: 'Смирнов Дмитрий',
+          vehicleNumber: 'Е012МН77',
+          phoneNumber: '+79162223344',
+          totalVisits: 31,
+          addedDate: '2025-09-20T08:15:00',
+          lastVisit: null
+        }
+      ];
+    }
+
+    // Initialize with sample data for demonstration
+    function initializeSampleData() {
+      const now = new Date();
+      
+      // Add sample active drivers
+      drivers.push({
+        id: nextId++,
+        permanentDriverId: 101,
+        driverName: 'Иванов Петр',
+        vehicleNumber: 'А123БВ77',
+        phoneNumber: '+79161234567',
+        arrivalTime: new Date(now.getTime() - 90 * 60000).toISOString(), // 1.5 hours ago
+        departureTime: null,
+        status: 'active',
+        isPermanent: true
+      });
+
+      drivers.push({
+        id: nextId++,
+        permanentDriverId: null,
+        driverName: 'Новиков Игорь',
+        vehicleNumber: 'Т555УФ99',
+        phoneNumber: '',
+        arrivalTime: new Date(now.getTime() - 45 * 60000).toISOString(), // 45 minutes ago
+        departureTime: null,
+        status: 'active',
+        isPermanent: false
+      });
+
+      // Add sample completed visit
+      drivers.push({
+        id: nextId++,
+        permanentDriverId: null,
+        driverName: 'Петров Михаил',
+        vehicleNumber: 'С789ЕЖ50',
+        phoneNumber: '',
+        arrivalTime: new Date(now.getTime() - 4 * 60 * 60000).toISOString(), // 4 hours ago
+        departureTime: new Date(now.getTime() - 1.5 * 60 * 60000).toISOString(), // 1.5 hours ago
+        status: 'completed',
+        isPermanent: false
+      });
+    }
+
+    // Format time
+    function formatTime(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Format duration
+    function formatDuration(minutes) {
+      const hours = Math.floor(minutes / 60);
+      const mins = Math.floor(minutes % 60);
+      
+      if (hours > 0) {
+        return `${hours}ч ${mins}м`;
+      }
+      return `${mins}м`;
+    }
+
+    // Calculate duration in minutes
+    function calculateDuration(startTime, endTime = null) {
+      const start = new Date(startTime);
+      const end = endTime ? new Date(endTime) : new Date();
+      return Math.floor((end - start) / 60000);
+    }
+
+    // Update current time display
+    function updateCurrentTime() {
+      const now = new Date();
+      const timeString = now.toLocaleString('ru-RU', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      document.getElementById('currentTime').textContent = timeString;
+    }
+
+    // Update statistics
+    function updateStatistics() {
+      const activeDrivers = drivers.filter(d => d.status === 'active');
+      const completedToday = drivers.filter(d => {
+        if (d.status !== 'completed') return false;
+        const departureDate = new Date(d.departureTime);
+        const today = new Date();
+        return departureDate.toDateString() === today.toDateString();
+      });
+
+      const totalArrivalsToday = activeDrivers.length + completedToday.length;
+
+      // Calculate average time for completed visits
+      let averageMinutes = 0;
+      if (completedToday.length > 0) {
+        const totalMinutes = completedToday.reduce((sum, driver) => {
+          return sum + calculateDuration(driver.arrivalTime, driver.departureTime);
+        }, 0);
+        averageMinutes = Math.floor(totalMinutes / completedToday.length);
+      }
+
+      document.getElementById('driversAtZone').textContent = activeDrivers.length;
+      document.getElementById('arrivalsToday').textContent = totalArrivalsToday;
+      document.getElementById('averageTime').textContent = completedToday.length > 0 ? formatDuration(averageMinutes) : '—';
+      document.getElementById('activeBadge').textContent = activeDrivers.length;
+      document.getElementById('permanentDriversCount').textContent = permanentDrivers.length;
+      document.getElementById('permanentBadge').textContent = permanentDrivers.length;
+    }
+
+    // Render active drivers
+    function renderActiveDrivers() {
+      const container = document.getElementById('activeDriversList');
+      const activeDrivers = drivers.filter(d => d.status === 'active').sort((a, b) => {
+        return new Date(b.arrivalTime) - new Date(a.arrivalTime);
+      });
+
+      if (activeDrivers.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <p>Нет водителей на зоне</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = activeDrivers.map(driver => {
+        const duration = calculateDuration(driver.arrivalTime);
+        const isLongWait = duration > 120; // More than 2 hours
+        
+        return `
+          <div class="driver-card ${isLongWait ? 'warning' : ''}">
+            <div class="driver-card-header">
+              <div class="driver-info">
+                <h3>
+                  ${driver.driverName}
+                  ${driver.isPermanent ? '<span class="permanent-badge">⭐ Постоянный</span>' : ''}
+                </h3>
+                <div class="vehicle-number">${driver.vehicleNumber}</div>
+                ${driver.phoneNumber ? `<div class="phone-number">${driver.phoneNumber}</div>` : ''}
+              </div>
+              <span class="duration-badge ${isLongWait ? 'warning' : ''}" id="duration-${driver.id}">
+                ${formatDuration(duration)}
+              </span>
+            </div>
+            <div class="driver-meta">
+              <div class="meta-row">
+                <span class="meta-label">Приехал:</span>
+                <span class="meta-value">${formatTime(driver.arrivalTime)}</span>
+              </div>
+            </div>
+            <button class="btn btn-secondary" onclick="markDeparture(${driver.id})">
+              Отметить отъезд
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render completed drivers
+    function renderCompletedDrivers() {
+      const container = document.getElementById('completedDriversList');
+      const completedDrivers = drivers.filter(d => d.status === 'completed').sort((a, b) => {
+        return new Date(b.departureTime) - new Date(a.departureTime);
+      }).slice(0, 30);
+
+      if (completedDrivers.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">✓</div>
+            <p>История пуста</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = completedDrivers.map(driver => {
+        const duration = calculateDuration(driver.arrivalTime, driver.departureTime);
+        
+        return `
+          <div class="driver-card">
+            <div class="driver-card-header">
+              <div class="driver-info">
+                <h3>${driver.driverName}</h3>
+                <div class="vehicle-number">${driver.vehicleNumber}</div>
+                ${driver.phoneNumber ? `<div class="phone-number">${driver.phoneNumber}</div>` : ''}
+              </div>
+              <span class="duration-badge">
+                ${formatDuration(duration)}
+              </span>
+            </div>
+            <div class="driver-meta">
+              <div class="meta-row">
+                <span class="meta-label">Приезд:</span>
+                <span class="meta-value">${formatTime(driver.arrivalTime)}</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-label">Отъезд:</span>
+                <span class="meta-value">${formatTime(driver.departureTime)}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render all
+    function renderAll() {
+      renderActiveDrivers();
+      renderCompletedDrivers();
+      updateStatistics();
+    }
+
+    // Update durations for active drivers
+    function updateDurations() {
+      const activeDrivers = drivers.filter(d => d.status === 'active');
+      activeDrivers.forEach(driver => {
+        const durationElement = document.getElementById(`duration-${driver.id}`);
+        if (durationElement) {
+          const duration = calculateDuration(driver.arrivalTime);
+          durationElement.textContent = formatDuration(duration);
+          
+          // Update warning class
+          const card = durationElement.closest('.driver-card');
+          if (duration > 120) {
+            card.classList.add('warning');
+            durationElement.classList.add('warning');
+          } else {
+            card.classList.remove('warning');
+            durationElement.classList.remove('warning');
+          }
+        }
+      });
+    }
+
+    // Register arrival (new driver)
+    function registerArrival(event) {
+      event.preventDefault();
+      
+      const driverName = document.getElementById('driverName').value.trim();
+      const vehicleNumber = document.getElementById('vehicleNumber').value.trim();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
+      const saveAsPermanent = document.getElementById('saveAsPermanent').checked;
+
+      if (!driverName || !vehicleNumber) {
+        alert('Пожалуйста, заполните имя водителя и номер машины');
+        return;
+      }
+
+      let permanentDriverId = null;
+      let isPermanent = false;
+
+      // Check if driver should be saved as permanent
+      if (saveAsPermanent) {
+        // Check if vehicle number already exists
+        const existingPermanent = permanentDrivers.find(pd => 
+          pd.vehicleNumber.toLowerCase() === vehicleNumber.toLowerCase()
+        );
+        
+        if (existingPermanent) {
+          alert('Водитель с таким номером уже существует в постоянных');
+        } else {
+          // Add to permanent drivers
+          const newPermanentDriver = {
+            id: nextPermanentId++,
+            driverName,
+            vehicleNumber,
+            phoneNumber,
+            totalVisits: 0,
+            addedDate: new Date().toISOString(),
+            lastVisit: null
+          };
+          permanentDrivers.push(newPermanentDriver);
+          permanentDriverId = newPermanentDriver.id;
+          isPermanent = true;
+          updatePermanentDriverSelect();
+          showSuccessMessage('Водитель добавлен в постоянные');
+        }
+      }
+
+      const newDriver = {
+        id: nextId++,
+        permanentDriverId,
+        driverName,
+        vehicleNumber,
+        phoneNumber,
+        arrivalTime: new Date().toISOString(),
+        departureTime: null,
+        status: 'active',
+        isPermanent
+      };
+
+      drivers.push(newDriver);
+      
+      // Update visit count if permanent
+      if (permanentDriverId) {
+        const permDriver = permanentDrivers.find(pd => pd.id === permanentDriverId);
+        if (permDriver) {
+          permDriver.totalVisits++;
+          permDriver.lastVisit = newDriver.arrivalTime;
+        }
+      }
+      
+      renderAll();
+
+      // Clear form
+      document.getElementById('registrationForm').reset();
+      document.getElementById('driverName').focus();
+    }
+
+    // Register arrival (permanent driver)
+    function registerPermanentDriverArrival(event) {
+      event.preventDefault();
+      
+      const selectedId = parseInt(document.getElementById('permanentDriverSelect').value);
+      if (!selectedId) {
+        alert('Пожалуйста, выберите водителя');
+        return;
+      }
+
+      const permanentDriver = permanentDrivers.find(pd => pd.id === selectedId);
+      if (!permanentDriver) return;
+
+      const newDriver = {
+        id: nextId++,
+        permanentDriverId: permanentDriver.id,
+        driverName: permanentDriver.driverName,
+        vehicleNumber: permanentDriver.vehicleNumber,
+        phoneNumber: permanentDriver.phoneNumber,
+        arrivalTime: new Date().toISOString(),
+        departureTime: null,
+        status: 'active',
+        isPermanent: true
+      };
+
+      drivers.push(newDriver);
+      
+      // Update visit count
+      permanentDriver.totalVisits++;
+      permanentDriver.lastVisit = newDriver.arrivalTime;
+      
+      renderAll();
+
+      // Reset form
+      document.getElementById('permanentDriverForm').reset();
+    }
+
+    // Quick registration from permanent drivers list
+    function quickRegisterPermanent(permanentDriverId) {
+      const permanentDriver = permanentDrivers.find(pd => pd.id === permanentDriverId);
+      if (!permanentDriver) return;
+
+      const newDriver = {
+        id: nextId++,
+        permanentDriverId: permanentDriver.id,
+        driverName: permanentDriver.driverName,
+        vehicleNumber: permanentDriver.vehicleNumber,
+        phoneNumber: permanentDriver.phoneNumber,
+        arrivalTime: new Date().toISOString(),
+        departureTime: null,
+        status: 'active',
+        isPermanent: true
+      };
+
+      drivers.push(newDriver);
+      
+      // Update visit count
+      permanentDriver.totalVisits++;
+      permanentDriver.lastVisit = newDriver.arrivalTime;
+      
+      renderAll();
+      
+      // Switch to registration tab to show the driver
+      switchTab('registration');
+      showSuccessMessage(`${permanentDriver.driverName} зарегистрирован`);
+    }
+
+    // Add permanent driver
+    function addPermanentDriver(event) {
+      event.preventDefault();
+      
+      const driverName = document.getElementById('permDriverName').value.trim();
+      const vehicleNumber = document.getElementById('permVehicleNumber').value.trim();
+      const phoneNumber = document.getElementById('permPhoneNumber').value.trim();
+
+      if (!driverName || !vehicleNumber) {
+        alert('Пожалуйста, заполните имя водителя и номер машины');
+        return;
+      }
+
+      // Check for duplicate vehicle number
+      const existingPermanent = permanentDrivers.find(pd => 
+        pd.vehicleNumber.toLowerCase() === vehicleNumber.toLowerCase()
+      );
+      
+      if (existingPermanent) {
+        alert('Водитель с таким номером машины уже существует');
+        return;
+      }
+
+      const newPermanentDriver = {
+        id: nextPermanentId++,
+        driverName,
+        vehicleNumber,
+        phoneNumber,
+        totalVisits: 0,
+        addedDate: new Date().toISOString(),
+        lastVisit: null
+      };
+
+      permanentDrivers.push(newPermanentDriver);
+      updatePermanentDriverSelect();
+      renderPermanentDrivers();
+      updateStatistics();
+      
+      // Clear form
+      document.getElementById('addPermanentDriverForm').reset();
+      document.getElementById('permDriverName').focus();
+      
+      showSuccessMessage('Постоянный водитель добавлен успешно');
+    }
+
+    // Delete permanent driver
+    function deletePermanentDriver(permanentDriverId) {
+      const driver = permanentDrivers.find(pd => pd.id === permanentDriverId);
+      if (!driver) return;
+
+      if (confirm(`Вы уверены, что хотите удалить ${driver.driverName} (${driver.vehicleNumber})?`)) {
+        permanentDrivers = permanentDrivers.filter(pd => pd.id !== permanentDriverId);
+        updatePermanentDriverSelect();
+        renderPermanentDrivers();
+        updateStatistics();
+        showSuccessMessage('Водитель удален из постоянных');
+      }
+    }
+
+    // Edit permanent driver (simple implementation)
+    function editPermanentDriver(permanentDriverId) {
+      const driver = permanentDrivers.find(pd => pd.id === permanentDriverId);
+      if (!driver) return;
+
+      const newName = prompt('Введите новое имя водителя:', driver.driverName);
+      if (newName && newName.trim()) {
+        driver.driverName = newName.trim();
+      }
+
+      const newPhone = prompt('Введите новый телефон:', driver.phoneNumber);
+      if (newPhone !== null) {
+        driver.phoneNumber = newPhone.trim();
+      }
+
+      updatePermanentDriverSelect();
+      renderPermanentDrivers();
+      showSuccessMessage('Данные водителя обновлены');
+    }
+
+    // Mark departure
+    function markDeparture(driverId) {
+      const driver = drivers.find(d => d.id === driverId);
+      if (!driver) return;
+
+      const duration = calculateDuration(driver.arrivalTime);
+      const confirmMessage = `Отметить отъезд водителя ${driver.driverName} (${driver.vehicleNumber})?\nВремя на зоне: ${formatDuration(duration)}`;
+      
+      if (confirm(confirmMessage)) {
+        driver.departureTime = new Date().toISOString();
+        driver.status = 'completed';
+        renderAll();
+      }
+    }
+
+    // Render permanent drivers list
+    function renderPermanentDrivers() {
+      const container = document.getElementById('permanentDriversList');
+      
+      if (permanentDrivers.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">👥</div>
+            <p>Нет постоянных водителей</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Sort by total visits (descending)
+      const sortedDrivers = [...permanentDrivers].sort((a, b) => b.totalVisits - a.totalVisits);
+
+      container.innerHTML = sortedDrivers.map(driver => {
+        const lastVisitText = driver.lastVisit ? formatTime(driver.lastVisit) : 'Не было';
+        
+        return `
+          <div class="driver-card">
+            <div class="driver-card-header">
+              <div class="driver-info">
+                <h3>
+                  ${driver.driverName}
+                  <span class="visit-count">${driver.totalVisits} ${driver.totalVisits === 1 ? 'визит' : driver.totalVisits < 5 ? 'визита' : 'визитов'}</span>
+                </h3>
+                <div class="vehicle-number">${driver.vehicleNumber}</div>
+                ${driver.phoneNumber ? `<div class="phone-number">${driver.phoneNumber}</div>` : ''}
+              </div>
+            </div>
+            <div class="driver-meta">
+              <div class="meta-row">
+                <span class="meta-label">Последний визит:</span>
+                <span class="meta-value">${lastVisitText}</span>
+              </div>
+            </div>
+            <div class="action-buttons">
+              <button class="btn btn-primary btn-small" onclick="quickRegisterPermanent(${driver.id})">
+                Быстрая регистрация
+              </button>
+              <button class="btn btn-outline btn-small" onclick="editPermanentDriver(${driver.id})">
+                Редактировать
+              </button>
+              <button class="btn btn-danger btn-small" onclick="deletePermanentDriver(${driver.id})">
+                Удалить
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render frequent drivers in statistics
+    function renderFrequentDrivers() {
+      const container = document.getElementById('frequentDriversList');
+      
+      // Get top 5 permanent drivers by visit count
+      const topDrivers = [...permanentDrivers]
+        .sort((a, b) => b.totalVisits - a.totalVisits)
+        .slice(0, 5)
+        .filter(d => d.totalVisits > 0);
+
+      if (topDrivers.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⭐</div>
+            <p>Нет данных</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = topDrivers.map((driver, index) => {
+        return `
+          <div class="driver-card">
+            <div class="driver-card-header">
+              <div class="driver-info">
+                <h3>
+                  ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '⭐'} ${driver.driverName}
+                  <span class="visit-count">${driver.totalVisits} ${driver.totalVisits === 1 ? 'визит' : driver.totalVisits < 5 ? 'визита' : 'визитов'}</span>
+                </h3>
+                <div class="vehicle-number">${driver.vehicleNumber}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Update permanent driver select dropdown
+    function updatePermanentDriverSelect() {
+      const select = document.getElementById('permanentDriverSelect');
+      const sortedDrivers = [...permanentDrivers].sort((a, b) => 
+        a.driverName.localeCompare(b.driverName, 'ru')
+      );
+
+      select.innerHTML = '<option value="">-- Выберите постоянного водителя --</option>' +
+        sortedDrivers.map(driver => 
+          `<option value="${driver.id}">${driver.driverName} - ${driver.vehicleNumber}</option>`
+        ).join('');
+    }
+
+    // Show success message
+    function showSuccessMessage(message) {
+      // Create message element if it doesn't exist
+      let messageEl = document.getElementById('successMessage');
+      if (!messageEl) {
+        messageEl = document.createElement('div');
+        messageEl.id = 'successMessage';
+        messageEl.className = 'success-message';
+        const registrationSection = document.querySelector('.registration-section');
+        registrationSection.insertBefore(messageEl, registrationSection.firstChild);
+      }
+
+      messageEl.textContent = message;
+      messageEl.classList.add('show');
+
+      setTimeout(() => {
+        messageEl.classList.remove('show');
+      }, 3000);
+    }
+
+    // Tab switching
+    function switchTab(tabName) {
+      currentTab = tabName;
+      
+      // Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.dataset.tab === tabName) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        if (content.id === `${tabName}-tab`) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+
+      // Render appropriate content
+      if (tabName === 'permanent') {
+        renderPermanentDrivers();
+      } else if (tabName === 'statistics') {
+        renderFrequentDrivers();
+      }
+    }
+
+    // Mode switching
+    function switchMode(mode) {
+      currentMode = mode;
+      
+      // Update mode buttons
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        if (btn.dataset.mode === mode) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update forms
+      document.querySelectorAll('.driver-form').forEach(form => {
+        form.classList.remove('active');
+      });
+
+      if (mode === 'new') {
+        document.getElementById('registrationForm').classList.add('active');
+      } else {
+        document.getElementById('permanentDriverForm').classList.add('active');
+      }
+    }
+
+    // Initialize app
+    function initApp() {
+      // Initialize data
+      initializePermanentDrivers();
+      initializeSampleData();
+      
+      // Initial render
+      renderAll();
+      updateCurrentTime();
+      updatePermanentDriverSelect();
+      renderPermanentDrivers();
+      renderFrequentDrivers();
+
+      // Set up form submissions
+      document.getElementById('registrationForm').addEventListener('submit', registerArrival);
+      document.getElementById('permanentDriverForm').addEventListener('submit', registerPermanentDriverArrival);
+      document.getElementById('addPermanentDriverForm').addEventListener('submit', addPermanentDriver);
+
+      // Set up tab navigation
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Set up mode toggle
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchMode(btn.dataset.mode));
+      });
+
+      // Update current time every second
+      setInterval(updateCurrentTime, 1000);
+
+      // Update durations every 10 seconds
+      updateInterval = setInterval(() => {
+        updateDurations();
+        updateStatistics();
+      }, 10000);
+    }
+
+    // Start app when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>
