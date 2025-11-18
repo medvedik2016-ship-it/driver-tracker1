@@ -844,6 +844,23 @@ body {
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* Location Selection Specific */
+.location-btn-general {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  color: white;
+  border-color: #7c3aed;
+}
+
+.location-btn-general:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #9333ea 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(124, 58, 237, 0.3);
+}
+
+.location-btn-general.selected {
+  background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
+}
+
 /* Role-based theme colors */
 body.role-driver .app-header {
   background: #1e40af; /* Blue */
@@ -963,7 +980,43 @@ body.role-supervisor #history-tab .section-header h2::after {
     </div>
   </div>
 
-  <!-- Main App (hidden until login) -->
+  <!-- Location Selection Screen (shown after login) -->
+  <div id="locationScreen" style="display: none;">
+    <div class="login-screen">
+      <div class="login-container">
+        <div class="login-header">
+          <h1>🚛 Выберите объект</h1>
+        </div>
+        <div class="login-content">
+          <h2>Выберите объект для работы:</h2>
+          <div class="role-buttons" id="locationButtons">
+            <button class="role-btn location-btn" data-location="vegas">
+              <span class="role-icon">📦</span>
+              <span class="role-name">ЛП Вегас</span>
+            </button>
+            <button class="role-btn location-btn" data-location="domodedovo">
+              <span class="role-icon">📦</span>
+              <span class="role-name">ЛП Домодедово</span>
+            </button>
+            <button class="role-btn location-btn" data-location="klimovsk">
+              <span class="role-icon">📦</span>
+              <span class="role-name">ЛП Климовск</span>
+            </button>
+            <button class="role-btn location-btn" data-location="kievskoe">
+              <span class="role-icon">📦</span>
+              <span class="role-name">ЛП Киевское шоссе</span>
+            </button>
+            <button class="role-btn location-btn location-btn-general" data-location="general" id="generalLocationBtn" style="display: none;">
+              <span class="role-icon">🌐</span>
+              <span class="role-name">Общее</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App (hidden until location selected) -->
   <div id="mainApp" style="display: none;">
   <header class="app-header">
     <div class="header-content">
@@ -972,7 +1025,8 @@ body.role-supervisor #history-tab .section-header h2::after {
         <div class="current-time" id="currentTime"></div>
       </div>
       <div class="user-info">
-        <span class="logged-in-as">Вы вошли как: <strong id="userRoleDisplay"></strong></span>
+        <span class="logged-in-as">Вы вошли как: <strong id="userRoleDisplay"></strong> | Объект: <strong id="currentLocationDisplay"></strong></span>
+        <button class="btn-logout" id="changeLocationBtn" style="margin-right: var(--space-8);">Сменить объект</button>
         <button class="btn-logout" id="logoutBtn">Выход</button>
       </div>
     </div>
@@ -1156,6 +1210,18 @@ body.role-supervisor #history-tab .section-header h2::after {
     let currentTab = 'registration';
     let currentMode = 'new';
     
+    // Location management
+    let currentLocation = null;
+    let isGeneralView = false;
+    
+    const LOCATIONS = {
+      vegas: { id: 'vegas', name: 'ЛП Вегас', code: 'VGS' },
+      domodedovo: { id: 'domodedovo', name: 'ЛП Домодедово', code: 'DMD' },
+      klimovsk: { id: 'klimovsk', name: 'ЛП Климовск', code: 'KLM' },
+      kievskoe: { id: 'kievskoe', name: 'ЛП Киевское шоссе', code: 'KSH' },
+      general: { id: 'general', name: 'Общее', code: 'ALL', managerOnly: true }
+    };
+    
     // Authentication
     let currentUserRole = null;
     let userLoginTime = null;
@@ -1252,7 +1318,7 @@ body.role-supervisor #history-tab .section-header h2::after {
     function initializeSampleData() {
       const now = new Date();
       
-      // Add sample active drivers
+      // Add sample active drivers with locations
       drivers.push({
         id: nextId++,
         permanentDriverId: 101,
@@ -1262,7 +1328,9 @@ body.role-supervisor #history-tab .section-header h2::after {
         arrivalTime: new Date(now.getTime() - 90 * 60000).toISOString(), // 1.5 hours ago
         departureTime: null,
         status: 'active',
-        isPermanent: true
+        isPermanent: true,
+        locationId: 'vegas',
+        locationName: 'ЛП Вегас'
       });
 
       drivers.push({
@@ -1274,7 +1342,9 @@ body.role-supervisor #history-tab .section-header h2::after {
         arrivalTime: new Date(now.getTime() - 45 * 60000).toISOString(), // 45 minutes ago
         departureTime: null,
         status: 'active',
-        isPermanent: false
+        isPermanent: false,
+        locationId: 'domodedovo',
+        locationName: 'ЛП Домодедово'
       });
 
       // Add sample completed visit
@@ -1287,7 +1357,24 @@ body.role-supervisor #history-tab .section-header h2::after {
         arrivalTime: new Date(now.getTime() - 4 * 60 * 60000).toISOString(), // 4 hours ago
         departureTime: new Date(now.getTime() - 1.5 * 60 * 60000).toISOString(), // 1.5 hours ago
         status: 'completed',
-        isPermanent: false
+        isPermanent: false,
+        locationId: 'klimovsk',
+        locationName: 'ЛП Климовск'
+      });
+      
+      // Add more sample data for other locations
+      drivers.push({
+        id: nextId++,
+        permanentDriverId: null,
+        driverName: 'Смирнов Дмитрий',
+        vehicleNumber: 'Т555УФ99',
+        phoneNumber: '',
+        arrivalTime: new Date(now.getTime() - 60 * 60000).toISOString(),
+        departureTime: null,
+        status: 'active',
+        isPermanent: false,
+        locationId: 'kievskoe',
+        locationName: 'ЛП Киевское шоссе'
       });
     }
 
@@ -1329,10 +1416,19 @@ body.role-supervisor #history-tab .section-header h2::after {
       document.getElementById('currentTime').textContent = timeString;
     }
 
+    // Get filtered drivers by location
+    function getFilteredDrivers() {
+      if (isGeneralView) {
+        return drivers;
+      }
+      return drivers.filter(d => d.locationId === currentLocation);
+    }
+    
     // Update statistics
     function updateStatistics() {
-      const activeDrivers = drivers.filter(d => d.status === 'active');
-      const completedToday = drivers.filter(d => {
+      const filteredDrivers = getFilteredDrivers();
+      const activeDrivers = filteredDrivers.filter(d => d.status === 'active');
+      const completedToday = filteredDrivers.filter(d => {
         if (d.status !== 'completed') return false;
         const departureDate = new Date(d.departureTime);
         const today = new Date();
@@ -1361,7 +1457,8 @@ body.role-supervisor #history-tab .section-header h2::after {
     // Render active drivers
     function renderActiveDrivers() {
       const container = document.getElementById('activeDriversList');
-      const activeDrivers = drivers.filter(d => d.status === 'active').sort((a, b) => {
+      const filteredDrivers = getFilteredDrivers();
+      const activeDrivers = filteredDrivers.filter(d => d.status === 'active').sort((a, b) => {
         return new Date(b.arrivalTime) - new Date(a.arrivalTime);
       });
 
@@ -1378,6 +1475,7 @@ body.role-supervisor #history-tab .section-header h2::after {
       container.innerHTML = activeDrivers.map(driver => {
         const duration = calculateDuration(driver.arrivalTime);
         const isLongWait = duration > 120; // More than 2 hours
+        const locationBadge = isGeneralView ? `<span class="permanent-badge" style="background: var(--color-bg-5);">${driver.locationName}</span>` : '';
         
         return `
           <div class="driver-card ${isLongWait ? 'warning' : ''}">
@@ -1386,6 +1484,7 @@ body.role-supervisor #history-tab .section-header h2::after {
                 <h3>
                   ${driver.driverName}
                   ${driver.isPermanent ? '<span class="permanent-badge">⭐ Постоянный</span>' : ''}
+                  ${locationBadge}
                 </h3>
                 <div class="vehicle-number">${driver.vehicleNumber}</div>
                 ${driver.phoneNumber ? `<div class="phone-number">${driver.phoneNumber}</div>` : ''}
@@ -1411,7 +1510,8 @@ body.role-supervisor #history-tab .section-header h2::after {
     // Render completed drivers
     function renderCompletedDrivers() {
       const container = document.getElementById('completedDriversList');
-      const completedDrivers = drivers.filter(d => d.status === 'completed').sort((a, b) => {
+      const filteredDrivers = getFilteredDrivers();
+      const completedDrivers = filteredDrivers.filter(d => d.status === 'completed').sort((a, b) => {
         return new Date(b.departureTime) - new Date(a.departureTime);
       }).slice(0, 30);
 
@@ -1427,12 +1527,13 @@ body.role-supervisor #history-tab .section-header h2::after {
 
       container.innerHTML = completedDrivers.map(driver => {
         const duration = calculateDuration(driver.arrivalTime, driver.departureTime);
+        const locationBadge = isGeneralView ? `<span class="permanent-badge" style="background: var(--color-bg-5);">${driver.locationName}</span>` : '';
         
         return `
           <div class="driver-card">
             <div class="driver-card-header">
               <div class="driver-info">
-                <h3>${driver.driverName}</h3>
+                <h3>${driver.driverName} ${locationBadge}</h3>
                 <div class="vehicle-number">${driver.vehicleNumber}</div>
                 ${driver.phoneNumber ? `<div class="phone-number">${driver.phoneNumber}</div>` : ''}
               </div>
@@ -1538,7 +1639,9 @@ body.role-supervisor #history-tab .section-header h2::after {
         arrivalTime: new Date().toISOString(),
         departureTime: null,
         status: 'active',
-        isPermanent
+        isPermanent,
+        locationId: currentLocation,
+        locationName: LOCATIONS[currentLocation].name
       };
 
       drivers.push(newDriver);
@@ -1581,7 +1684,9 @@ body.role-supervisor #history-tab .section-header h2::after {
         arrivalTime: new Date().toISOString(),
         departureTime: null,
         status: 'active',
-        isPermanent: true
+        isPermanent: true,
+        locationId: currentLocation,
+        locationName: LOCATIONS[currentLocation].name
       };
 
       drivers.push(newDriver);
@@ -1610,7 +1715,9 @@ body.role-supervisor #history-tab .section-header h2::after {
         arrivalTime: new Date().toISOString(),
         departureTime: null,
         status: 'active',
-        isPermanent: true
+        isPermanent: true,
+        locationId: currentLocation,
+        locationName: LOCATIONS[currentLocation].name
       };
 
       drivers.push(newDriver);
@@ -1925,9 +2032,46 @@ body.role-supervisor #history-tab .section-header h2::after {
       }
     }
     
+    // Location selection functions
+    function handleLocationSelection(locationId) {
+      currentLocation = locationId;
+      isGeneralView = (locationId === 'general');
+      
+      document.getElementById('locationScreen').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'block';
+      
+      // Update location display
+      const locationName = isGeneralView ? 'Общее (все объекты)' : LOCATIONS[locationId].name;
+      document.getElementById('currentLocationDisplay').textContent = locationName;
+      
+      // Re-render all data with location filter
+      renderAll();
+    }
+    
+    function showLocationSelection() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'none';
+      document.getElementById('locationScreen').style.display = 'flex';
+      
+      // Show/hide "Общее" button based on role
+      const generalBtn = document.getElementById('generalLocationBtn');
+      if (currentUserRole === 'manager') {
+        generalBtn.style.display = 'flex';
+      } else {
+        generalBtn.style.display = 'none';
+      }
+    }
+    
+    function handleChangeLocation() {
+      if (confirm('Вы уверены, что хотите сменить объект?')) {
+        document.getElementById('mainApp').style.display = 'none';
+        showLocationSelection();
+      }
+    }
+    
     function showMainApp() {
       document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('mainApp').style.display = 'block';
+      showLocationSelection();
       document.getElementById('userRoleDisplay').textContent = ROLE_NAMES[currentUserRole];
       
       // Apply role-based theme
@@ -2237,8 +2381,13 @@ body.role-supervisor #history-tab .section-header h2::after {
     
     function setupAuth() {
       // Set up login screen
-      document.querySelectorAll('.role-btn').forEach(btn => {
+      document.querySelectorAll('.role-btn:not(.location-btn)').forEach(btn => {
         btn.addEventListener('click', () => handleRoleSelection(btn.dataset.role));
+      });
+      
+      // Set up location selection
+      document.querySelectorAll('.location-btn').forEach(btn => {
+        btn.addEventListener('click', () => handleLocationSelection(btn.dataset.location));
       });
       
       document.getElementById('loginBtn').addEventListener('click', handleLogin);
@@ -2249,6 +2398,7 @@ body.role-supervisor #history-tab .section-header h2::after {
       });
       
       document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      document.getElementById('changeLocationBtn').addEventListener('click', handleChangeLocation);
       
       // Show login screen
       document.getElementById('loginScreen').style.display = 'flex';
