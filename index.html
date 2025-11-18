@@ -710,20 +710,281 @@ body {
     align-items: flex-start;
   }
 }
+
+/* Login Screen Styles */
+.login-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--color-background);
+  padding: var(--space-16);
+}
+
+.login-container {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-32);
+  max-width: 500px;
+  width: 100%;
+}
+
+.login-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  margin-bottom: var(--space-32);
+  color: var(--color-text);
+}
+
+.login-content h2 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  margin-bottom: var(--space-20);
+  color: var(--color-text-secondary);
+}
+
+.role-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-bottom: var(--space-24);
+}
+
+.role-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: var(--space-20);
+  background: var(--color-background);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.role-btn:hover {
+  background: var(--color-secondary);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.role-btn.selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.role-icon {
+  font-size: var(--font-size-3xl);
+}
+
+.role-name {
+  flex: 1;
+}
+
+.password-section {
+  margin-top: var(--space-24);
+}
+
+.error-message {
+  display: none;
+  background: rgba(var(--color-error-rgb), 0.15);
+  color: var(--color-error);
+  padding: var(--space-12);
+  border-radius: var(--radius-base);
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-12);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid rgba(var(--color-error-rgb), 0.3);
+}
+
+/* Header with user info */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-8);
+}
+
+.logged-in-as {
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+}
+
+.btn-logout {
+  padding: var(--space-8) var(--space-16);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-base);
+  color: var(--color-btn-primary-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.btn-logout:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Role-based theme colors */
+body.role-driver .app-header {
+  background: #1e40af; /* Blue */
+}
+
+body.role-supervisor .app-header {
+  background: #059669; /* Green */
+}
+
+body.role-manager .app-header {
+  background: #7c3aed; /* Purple */
+}
+
+body.role-driver .role-btn.selected,
+body.role-driver .btn-primary {
+  background: #1e40af;
+}
+
+body.role-supervisor .role-btn.selected {
+  background: #059669;
+}
+
+body.role-manager .role-btn.selected {
+  background: #7c3aed;
+}
+
+/* Settings Info */
+.settings-info {
+  background: var(--color-background);
+  padding: var(--space-16);
+  border-radius: var(--radius-base);
+  margin-top: var(--space-16);
+}
+
+.settings-info p {
+  margin: var(--space-12) 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.settings-info strong {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Read-only indicator for supervisor */
+body.role-supervisor #registration-tab .section-header h2::after,
+body.role-supervisor #permanent-tab .section-header h2::after,
+body.role-supervisor #history-tab .section-header h2::after {
+  content: ' (только просмотр)';
+  font-size: var(--font-size-sm);
+  color: var(--color-info);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Responsive login */
+@media (max-width: 640px) {
+  .login-container {
+    padding: var(--space-24);
+  }
+  
+  .login-header h1 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .user-info {
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .btn-logout {
+    width: 100%;
+  }
+  
+  body.role-supervisor .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
   </style>
 </head>
 <body>
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-container">
+      <div class="login-header">
+        <h1>🚛 Учёт приезда водителей на зону погрузки</h1>
+      </div>
+      <div class="login-content">
+        <h2>Выберите вашу роль:</h2>
+        <div class="role-buttons">
+          <button class="role-btn" data-role="driver">
+            <span class="role-icon">👤</span>
+            <span class="role-name">Водитель</span>
+          </button>
+          <button class="role-btn" data-role="supervisor">
+            <span class="role-icon">👁️</span>
+            <span class="role-name">Руководитель</span>
+          </button>
+          <button class="role-btn" data-role="manager">
+            <span class="role-icon">⚙️</span>
+            <span class="role-name">Управляющий</span>
+          </button>
+        </div>
+        <div class="password-section" id="passwordSection" style="display: none;">
+          <label class="form-label" for="passwordInput">Пароль</label>
+          <input type="password" id="passwordInput" class="form-control" placeholder="Введите пароль">
+          <div class="error-message" id="errorMessage">Неверный пароль</div>
+          <button class="btn btn-primary" id="loginBtn">Войти</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App (hidden until login) -->
+  <div id="mainApp" style="display: none;">
   <header class="app-header">
-    <h1>🚛 Зона погрузки</h1>
-    <div class="current-time" id="currentTime"></div>
+    <div class="header-content">
+      <div>
+        <h1>🚛 Зона погрузки</h1>
+        <div class="current-time" id="currentTime"></div>
+      </div>
+      <div class="user-info">
+        <span class="logged-in-as">Вы вошли как: <strong id="userRoleDisplay"></strong></span>
+        <button class="btn-logout" id="logoutBtn">Выход</button>
+      </div>
+    </div>
   </header>
 
   <!-- Tab Navigation -->
   <nav class="tab-navigation">
     <button class="tab-btn active" data-tab="registration">Регистрация</button>
-    <button class="tab-btn" data-tab="history">История</button>
+    <button class="tab-btn" data-tab="history" id="historyTab">История</button>
     <button class="tab-btn" data-tab="permanent">Постоянные водители</button>
     <button class="tab-btn" data-tab="statistics">Статистика</button>
+    <button class="tab-btn" data-tab="settings" style="display:none;">Настройки</button>
   </nav>
 
   <div class="container">
@@ -866,7 +1127,23 @@ body {
       </div>
     </div>
 
+    <!-- Settings Tab (Manager Only) -->
+    <div class="tab-content" id="settings-tab">
+      <section class="registration-section">
+        <h2>Настройки системы</h2>
+        <div class="settings-info">
+          <p><strong>Текущая роль:</strong> Управляющий</p>
+          <p><strong>Время входа:</strong> <span id="loginTimeDisplay"></span></p>
+          <p><strong>Всего записей:</strong> <span id="totalRecordsCount"></span></p>
+        </div>
+        <div class="action-buttons" style="margin-top: var(--space-24);">
+          <button class="btn btn-outline" onclick="exportData()">Экспортировать данные</button>
+          <button class="btn btn-danger" onclick="clearDailyData()">Очистить данные за сегодня</button>
+        </div>
+      </section>
+    </div>
 
+  </div>
   </div>
 
   <script>
@@ -878,6 +1155,56 @@ body {
     let updateInterval = null;
     let currentTab = 'registration';
     let currentMode = 'new';
+    
+    // Authentication
+    let currentUserRole = null;
+    let userLoginTime = null;
+    let selectedRole = null;
+    
+    const PASSWORDS = {
+      driver: 'driver123',
+      supervisor: 'supervisor123',
+      manager: 'manager123'
+    };
+    
+    const ROLE_NAMES = {
+      driver: 'Водитель',
+      supervisor: 'Руководитель',
+      manager: 'Управляющий'
+    };
+    
+    const PERMISSIONS = {
+      driver: {
+        canRegisterArrival: true,
+        canMarkDeparture: true,
+        canViewOwnHistory: true,
+        canViewAllStatistics: false,
+        canViewAllDrivers: false,
+        canManagePermanentDrivers: false,
+        canEditData: false,
+        canAccessSettings: false
+      },
+      supervisor: {
+        canRegisterArrival: false,
+        canMarkDeparture: false,
+        canViewOwnHistory: false,
+        canViewAllStatistics: true,
+        canViewAllDrivers: true,
+        canManagePermanentDrivers: false,
+        canEditData: false,
+        canAccessSettings: false
+      },
+      manager: {
+        canRegisterArrival: true,
+        canMarkDeparture: true,
+        canViewOwnHistory: true,
+        canViewAllStatistics: true,
+        canViewAllDrivers: true,
+        canManagePermanentDrivers: true,
+        canEditData: true,
+        canAccessSettings: true
+      }
+    };
 
     // Initialize permanent drivers with sample data
     function initializePermanentDrivers() {
@@ -1572,11 +1899,140 @@ body {
       }
     }
 
+    // Authentication functions
+    function handleRoleSelection(role) {
+      selectedRole = role;
+      document.querySelectorAll('.role-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.role === role);
+      });
+      document.getElementById('passwordSection').style.display = 'block';
+      document.getElementById('passwordInput').focus();
+    }
+    
+    function handleLogin() {
+      const password = document.getElementById('passwordInput').value;
+      const errorMessage = document.getElementById('errorMessage');
+      
+      if (password === PASSWORDS[selectedRole]) {
+        currentUserRole = selectedRole;
+        userLoginTime = new Date().toISOString();
+        errorMessage.style.display = 'none';
+        showMainApp();
+      } else {
+        errorMessage.style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+      }
+    }
+    
+    function showMainApp() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'block';
+      document.getElementById('userRoleDisplay').textContent = ROLE_NAMES[currentUserRole];
+      
+      // Apply role-based theme
+      document.body.className = `role-${currentUserRole}`;
+      
+      // Initialize the app first
+      initApp();
+      
+      // Configure interface based on role
+      configureInterfaceForRole();
+      
+      // Set default tab based on role
+      if (currentUserRole === 'driver') {
+        switchTab('registration');
+      } else if (currentUserRole === 'supervisor') {
+        switchTab('statistics');
+      } else {
+        switchTab('registration');
+      }
+      
+      // Apply role restrictions after rendering
+      setTimeout(() => {
+        applyRoleRestrictions();
+      }, 100);
+    }
+    
+    function handleLogout() {
+      if (confirm('Вы уверены, что хотите выйти?')) {
+        currentUserRole = null;
+        userLoginTime = null;
+        selectedRole = null;
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('mainApp').style.display = 'none';
+        document.getElementById('passwordSection').style.display = 'none';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('errorMessage').style.display = 'none';
+        document.querySelectorAll('.role-btn').forEach(btn => {
+          btn.classList.remove('selected');
+        });
+        document.body.className = '';
+        
+        // Don't clear intervals as we want them to persist
+      }
+    }
+    
+    function configureInterfaceForRole() {
+      const tabs = document.querySelectorAll('.tab-btn');
+      
+      tabs.forEach(tab => {
+        const tabName = tab.dataset.tab;
+        
+        if (currentUserRole === 'driver') {
+          // Driver can only see registration and their own history
+          if (tabName === 'registration') {
+            tab.style.display = 'flex';
+            tab.textContent = 'Моя регистрация';
+          } else if (tabName === 'history') {
+            tab.style.display = 'flex';
+            tab.textContent = 'Моя история';
+          } else {
+            tab.style.display = 'none';
+          }
+        } else if (currentUserRole === 'supervisor') {
+          // Supervisor can see statistics, active drivers, and history
+          if (tabName === 'statistics') {
+            tab.style.display = 'flex';
+          } else if (tabName === 'history') {
+            tab.style.display = 'flex';
+            tab.textContent = 'История';
+          } else if (tabName === 'registration') {
+            tab.style.display = 'flex';
+            tab.textContent = 'Активные водители';
+          } else {
+            tab.style.display = 'none';
+          }
+        } else {
+          // Manager can see everything
+          if (tabName === 'settings') {
+            tab.style.display = 'flex';
+          } else {
+            tab.style.display = 'flex';
+          }
+          // Reset tab names for manager
+          if (tabName === 'registration') {
+            tab.textContent = 'Регистрация';
+          } else if (tabName === 'history') {
+            tab.textContent = 'История';
+          }
+        }
+      });
+    }
+    
+    function hasPermission(permission) {
+      if (!currentUserRole) return false;
+      return PERMISSIONS[currentUserRole][permission];
+    }
+    
     // Initialize app
     function initApp() {
-      // Initialize data
-      initializePermanentDrivers();
-      initializeSampleData();
+      // Only initialize once
+      if (drivers.length === 0 && permanentDrivers.length === 0) {
+        // Initialize data
+        initializePermanentDrivers();
+        initializeSampleData();
+      }
       
       // Initial render
       renderAll();
@@ -1585,36 +2041,217 @@ body {
       renderPermanentDrivers();
       renderFrequentDrivers();
 
-      // Set up form submissions
-      document.getElementById('registrationForm').addEventListener('submit', registerArrival);
-      document.getElementById('permanentDriverForm').addEventListener('submit', registerPermanentDriverArrival);
-      document.getElementById('addPermanentDriverForm').addEventListener('submit', addPermanentDriver);
+      // Set up form submissions (only once)
+      const regForm = document.getElementById('registrationForm');
+      if (regForm && !regForm.dataset.initialized) {
+        regForm.addEventListener('submit', registerArrival);
+        regForm.dataset.initialized = 'true';
+      }
+      
+      const permForm = document.getElementById('permanentDriverForm');
+      if (permForm && !permForm.dataset.initialized) {
+        permForm.addEventListener('submit', registerPermanentDriverArrival);
+        permForm.dataset.initialized = 'true';
+      }
+      
+      const addPermForm = document.getElementById('addPermanentDriverForm');
+      if (addPermForm && !addPermForm.dataset.initialized) {
+        addPermForm.addEventListener('submit', addPermanentDriver);
+        addPermForm.dataset.initialized = 'true';
+      }
 
-      // Set up tab navigation
+      // Set up tab navigation (only once)
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+        if (!btn.dataset.initialized) {
+          btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+          btn.dataset.initialized = 'true';
+        }
       });
 
-      // Set up mode toggle
+      // Set up mode toggle (only once)
       document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.addEventListener('click', () => switchMode(btn.dataset.mode));
+        if (!btn.dataset.initialized) {
+          btn.addEventListener('click', () => switchMode(btn.dataset.mode));
+          btn.dataset.initialized = 'true';
+        }
       });
+      
+      // Update settings if manager
+      if (currentUserRole === 'manager') {
+        updateSettingsDisplay();
+      }
 
-      // Update current time every second
-      setInterval(updateCurrentTime, 1000);
+      // Update current time every second (only once)
+      if (!window.timeInterval) {
+        window.timeInterval = setInterval(updateCurrentTime, 1000);
+      }
 
-      // Update durations every 10 seconds
-      updateInterval = setInterval(() => {
-        updateDurations();
-        updateStatistics();
-      }, 10000);
+      // Update durations every 10 seconds (only once)
+      if (!updateInterval) {
+        updateInterval = setInterval(() => {
+          updateDurations();
+          updateStatistics();
+        }, 10000);
+      }
     }
 
+    // Apply role restrictions to UI
+    function applyRoleRestrictions() {
+      if (currentUserRole === 'driver') {
+        // Driver: hide permanent driver mode
+        const permanentModeBtn = document.querySelector('.mode-btn[data-mode="permanent"]');
+        if (permanentModeBtn) permanentModeBtn.style.display = 'none';
+        
+        // Hide checkbox for saving as permanent
+        const saveAsPermanentCheckbox = document.querySelector('.checkbox-group');
+        if (saveAsPermanentCheckbox) saveAsPermanentCheckbox.style.display = 'none';
+        
+        // Update registration section title
+        const regSection = document.querySelector('#registration-tab .registration-section');
+        if (regSection) {
+          const heading = regSection.querySelector('h2');
+          if (heading) heading.textContent = 'Мой статус';
+        }
+      } else if (currentUserRole === 'supervisor') {
+        // Supervisor: read-only, hide all forms and action buttons
+        const regTab = document.getElementById('registration-tab');
+        if (regTab) {
+          const regSection = regTab.querySelector('.registration-section');
+          if (regSection) regSection.style.display = 'none';
+          
+          // Update section title to indicate read-only
+          const sectionHeader = regTab.querySelector('.section-header h2');
+          if (sectionHeader) sectionHeader.textContent = 'Активные водители';
+        }
+        
+        // Hide all forms
+        document.querySelectorAll('form').forEach(form => {
+          form.style.display = 'none';
+        });
+        
+        // Hide add permanent driver section
+        const permTab = document.getElementById('permanent-tab');
+        if (permTab) {
+          const regSection = permTab.querySelector('.registration-section');
+          if (regSection) regSection.style.display = 'none';
+        }
+        
+        // Buttons will be hidden by the overridden render functions
+      } else if (currentUserRole === 'manager') {
+        // Manager: full access, show everything
+        const permanentModeBtn = document.querySelector('.mode-btn[data-mode="permanent"]');
+        if (permanentModeBtn) permanentModeBtn.style.display = 'block';
+        
+        const saveAsPermanentCheckbox = document.querySelector('.checkbox-group');
+        if (saveAsPermanentCheckbox) saveAsPermanentCheckbox.style.display = 'block';
+        
+        // Update settings display
+        if (updateSettingsDisplay) updateSettingsDisplay();
+      }
+    }
+    
+    // Manager-only functions
+    function exportData() {
+      const allData = {
+        drivers: drivers,
+        permanentDrivers: permanentDrivers,
+        exportDate: new Date().toISOString()
+      };
+      
+      const dataStr = JSON.stringify(allData, null, 2);
+      const dataBlob = new Blob([dataStr], {type: 'application/json'});
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `driver-data-${new Date().toISOString().split('T')[0]}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      
+      showSuccessMessage('Данные экспортированы');
+    }
+    
+    function clearDailyData() {
+      if (confirm('Вы уверены, что хотите очистить все данные за сегодня?')) {
+        const today = new Date().toDateString();
+        drivers = drivers.filter(d => {
+          const driverDate = new Date(d.arrivalTime).toDateString();
+          return driverDate !== today;
+        });
+        renderAll();
+        updateSettingsDisplay();
+        showSuccessMessage('Данные за сегодня очищены');
+      }
+    }
+    
+    function updateSettingsDisplay() {
+      if (userLoginTime) {
+        const loginTime = new Date(userLoginTime);
+        document.getElementById('loginTimeDisplay').textContent = loginTime.toLocaleString('ru-RU');
+      }
+      document.getElementById('totalRecordsCount').textContent = drivers.length;
+    }
+    
+    // Override render functions to apply role restrictions
+    const originalRenderActiveDrivers = renderActiveDrivers;
+    renderActiveDrivers = function() {
+      originalRenderActiveDrivers();
+      
+      // Apply role-specific restrictions after rendering
+      setTimeout(() => {
+        if (currentUserRole === 'supervisor') {
+          // Hide all action buttons for supervisor
+          document.querySelectorAll('#activeDriversList .btn').forEach(btn => {
+            btn.style.display = 'none';
+          });
+        }
+      }, 10);
+    };
+    
+    const originalRenderPermanentDrivers = renderPermanentDrivers;
+    renderPermanentDrivers = function() {
+      originalRenderPermanentDrivers();
+      
+      // Apply role-specific restrictions after rendering
+      setTimeout(() => {
+        if (currentUserRole === 'supervisor' || currentUserRole === 'driver') {
+          // Hide action buttons for supervisor and driver
+          document.querySelectorAll('#permanentDriversList .action-buttons').forEach(btnGroup => {
+            btnGroup.style.display = 'none';
+          });
+        }
+      }, 10);
+    };
+    
+    const originalRenderCompletedDrivers = renderCompletedDrivers;
+    renderCompletedDrivers = function() {
+      originalRenderCompletedDrivers();
+      // No additional restrictions needed for history view
+    };
+    
     // Start app when DOM is ready
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initApp);
+      document.addEventListener('DOMContentLoaded', setupAuth);
     } else {
-      initApp();
+      setupAuth();
+    }
+    
+    function setupAuth() {
+      // Set up login screen
+      document.querySelectorAll('.role-btn').forEach(btn => {
+        btn.addEventListener('click', () => handleRoleSelection(btn.dataset.role));
+      });
+      
+      document.getElementById('loginBtn').addEventListener('click', handleLogin);
+      document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          handleLogin();
+        }
+      });
+      
+      document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      
+      // Show login screen
+      document.getElementById('loginScreen').style.display = 'flex';
     }
   </script>
 </body>
